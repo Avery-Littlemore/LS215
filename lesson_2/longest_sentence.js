@@ -23,22 +23,22 @@ let longText = 'Four score and seven years ago our fathers brought forth' +
   ' what we say here, but it can never forget what they' +
   ' did here. It is for us the living, rather, to be dedicated' +
   ' here to the unfinished work which they who fought' +
-  ' here have thus far so nobly advanced.' //+ 
-  // ' It is rather for' +
-  // ' us to be here dedicated to the great task remaining' +
-  // ' before us -- that from these honored dead we take' +
-  // ' increased devotion to that cause for which they gave' +
-  // ' the last full measure of devotion -- that we here highly' +
-  // ' resolve that these dead shall not have died in vain' +
-  // ' -- that this nation, under God, shall have a new birth' +
-  // ' of freedom -- and that government of the people, by' +
-  // ' the people, for the people, shall not perish from the' +
-  // ' earth.';
+  ' here have thus far so nobly advanced.' + 
+  ' It is rather for' +
+  ' us to be here dedicated to the great task remaining' +
+  ' before us -- that from these honored dead we take' +
+  ' increased devotion to that cause for which they gave' +
+  ' the last full measure of devotion -- that we here highly' +
+  ' resolve that these dead shall not have died in vain' +
+  ' -- that this nation, under God, shall have a new birth' +
+  ' of freedom -- and that government of the people, by' +
+  ' the people, for the people, shall not perish from the' +
+  ' earth.';
 
 function longestSentence(text) {
   let sentences = text.split(/[.!?]/).map(element => element.trim());
   let longestFound = '';
-  
+
   sentences.forEach(sentence => {
     if (sentence.length > longestFound.length) {
       longestFound = sentence;
@@ -51,7 +51,7 @@ function longestSentence(text) {
   let fullSentence = text.slice(textIndex, textIndex + charCount + 1);
   let wordCount = longestFound.split(/ /).length;
 
-  console.log(`${fullSentence}`);
+  console.log(fullSentence);
   console.log(`The longest sentence has ${wordCount} words.`);
 }
 
@@ -65,3 +65,23 @@ longestSentence(longText);
 // console output
 // Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal.
 // The longest sentence has 30 words.
+
+// other solution:
+// function longestSentence(text) {
+//   let sentenceArray = text.match(/\w[^.!?]*[.!?]/g);
+
+//   let longest = sentenceArray.reduce((longest, currentSentence) => {
+//     if (wordCount(longest) > wordCount(currentSentence)) {
+//       return longest;
+//     } else {
+//       return currentSentence;
+//     }
+//   });
+
+//   console.log(longest);
+//   console.log('The longest sentence has ' + String(wordCount(longest)) + ' words.');
+// }
+
+// function wordCount(sentence) {
+//   return sentence.split(/\s+/).length;
+// }
