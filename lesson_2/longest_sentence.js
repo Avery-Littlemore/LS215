@@ -37,10 +37,10 @@ let longText = 'Four score and seven years ago our fathers brought forth' +
 
 function longestSentence(text) {
   let sentences = text.split(/[.!?]/).map(element => element.trim());
-  let longestFound = '';
+  let longestFound;
 
   sentences.forEach(sentence => {
-    if (sentence.split(' ').length > longestFound.split(' ').length) {
+    if (longestFound === undefined || sentence.split(/\s+/).length > longestFound.split(/\s+/).length) {
       longestFound = sentence;
     }
   });
@@ -49,19 +49,30 @@ function longestSentence(text) {
   let charCount = longestFound.length;
   
   let fullSentence = text.slice(textIndex, textIndex + charCount + 1);
-  let wordCount = longestFound.split(/ /).length;
+  let wordCount = longestFound.split(/\s+/).length;
 
   console.log(fullSentence);
   console.log(`The longest sentence has ${wordCount} words.`);
 }
 
-// longestSentence(longText);
+longestSentence(longText);
 
 longestSentence("The brown fox is superlative! To be or not to be?");
 // expected output:
 // To be or not to be?
 // The longest sentence has 6 words.
 
+longestSentence("Hello! Why? Goodbye.");
+// expected output:
+// Hello! *OR* Why? *OR* Goodbye.
+
+// The longest sentence has 1 word(s).
+
+longestSentence("Hello there! Why  not? Goodbye.");
+// expected output:
+// Hello there *OR* Why  not?
+
+// The longest sentence has 2 words.
 
 // console output
 // It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.
@@ -75,7 +86,7 @@ longestSentence("The brown fox is superlative! To be or not to be?");
 
 // other solution:
 // function longestSentence(text) {
-//   let sentenceArray = text.match(/\w[^.!?]*[.!?]/g);
+  // let sentenceArray = text.match(/\w[^.!?]*[.!?]/g);
 
 //   let longest = sentenceArray.reduce((longest, currentSentence) => {
 //     if (wordCount(longest) > wordCount(currentSentence)) {

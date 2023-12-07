@@ -17,6 +17,22 @@
 // Here is an example of version number ordering:
 // 0.1 < 1 = 1.0 < 1.1 < 1.2 = 1.2.0.0 < 1.18.2 < 13.37
 
+// - if any inputs contain invalid characters, return null
+//   - any characters other than digits and . are considered invalid
+// - Compare the two input versions
+//   - if version1 > version2, return 1
+//   - if version1 < version2, return -1
+//   - if version1 === version2, return 0
+// - The rules to compare two version numbers
+//   - start from the left most parts of the two version numbers
+//   - if the number part of the first version number is larger, then the first version number is larger
+//   - if the number part of the second version number is larger, then the first version number is smaller
+//   - if the number parts of both version numbers are the same, move to the next number part of the two version numbers
+//     - do the same comparison and decide which version number is larger
+//     - keep moving to the right until the result of the comparison is determined
+//     - if we get to the last number part of the two version numbers and they're equal,
+//       then the two version numbers are equal
+
 /*
 P: 
 Input: string1, string2 (can't have multiple dots in a number)
@@ -47,6 +63,13 @@ Examples:
 123, vs 35 => null
 1.3.a vs 1.3.b => null
 
+1.a is not a valid version          // we only want to deal with numbers and dots
+.1 and 1. are not valid versions    // versions must begin and end with a number
+1..0 is not a valid version         // dots can only appear between two numbers
+1.0 and 1.0.0 are equal to 1        // zeros can be inferred but are not always shown
+1.0.0 is less than 1.1              // can handle version numbers with different lengths
+1.0 is less than 1.0.5              // can handle version numbers with different lengths
+
 Data Structures:
 - Input strings of numbers
   - split into array of numbers (delimited by dots)
@@ -70,48 +93,54 @@ Algorithm:
 
 */
 
-function compareVersions(version1, version2) {
-  if (version1.match(/[^0-9.]/) || (version2.match(/[^0-9.]/))) {
+function compareVersions(versionA, versionB) {
+  let validChars = /^[0-9]+(\.[0-9]+)*$/;
+
+  if (!validChars.test(versionA) || !validChars.test(versionB)) {
     return null;
   }
 
-  let result;
-  let split1 = version1.split('.');
-  let split2 = version2.split('.');
+  let aParts = versionA.split('.').map(Number);
+  let bParts = versionB.split('.').map(Number);
+  let maxLength = Math.max(aParts.length, bParts.length);
 
-  if (split1.length >= split2.length) {
-    split1.forEach((subVersion, index) => {
-      while (result === undefined) {
-        if (split2[index] === undefined) {
-          if (subVersion > 0) {
-            result = 1;
-          } else {
-            result = 0;
-          }
-        } else if (subVersion > split2[index]) {
-          result = 1;
-        } else if (subVersion < split2[index]) {
-          result = -1;
-        } else if (subVersion === split2[index]) {
-          result = 0;
-        } 
-      }
-    });
-  } else {
-    
+  for (let i = 0; i < maxLength; i += 1) {
+    let aValue = aParts[i] || 0;
+    let bValue = bParts[i] || 0;
+
+    if (aValue > bValue) {
+      return 1;
+    } else if (aValue < bValue) {
+      return -1;
+    }
   }
-  
-  return result;
 
+  return 0;
 }
 
-console.log(compareVersions('0.1', '1.0'));
-console.log(compareVersions('1', '1.0'));
-console.log(compareVersions('1.0', '1.1'));
-console.log(compareVersions('1.1', '1.2'));
-// console.log(compareVersions('1.2', '1.2.0.0'));
-// console.log(compareVersions('1.2.0.0', '1.18.2'));
+// console.log(compareVersions('0.1', '1.0'));
+// console.log(compareVersions('1', '1.0'));
+// console.log(compareVersions('1.0', '1.1'));
+// console.log(compareVersions('1.1', '1.2'));
+
+// console.log(compareVersions('1.2.0.0.0.1', '1.2.0.0'));
+// console.log(compareVersions('1.2.0.0.0.1', '1.2.0.0.0.1.0.1'));
+// console.log(compareVersions('1.2.0.0', '1.2.0.0.0.1'));
+// console.log(compareVersions('1.2.0.0.0.1.0.1', '1.2.0.0.0.1'));
+
+// console.log(compareVersions('1.18.2', '1.2.0.0'));
 // console.log(compareVersions('1.18.2', '13.37'));
 // console.log(compareVersions('123,', '35'));
 // console.log(compareVersions('123', '3_5'));
 // console.log(compareVersions('1.3.a', '1.3.b'));
+
+console.log(compareVersions('1', '1'));            // 0
+console.log(compareVersions('1.1', '1.0'));        // 1
+console.log(compareVersions('2.3.4', '2.3.5'));    // -1
+console.log(compareVersions('1.a', '1'));          // null
+console.log(compareVersions('.1', '1'));           // null
+console.log(compareVersions('1.', '2'));           // null
+console.log(compareVersions('1..0', '2.0'));       // null
+console.log(compareVersions('1.0', '1.0.0'));      // 0
+console.log(compareVersions('1.0.0', '1.1'));      // -1
+console.log(compareVersions('1.0', '1.0.5'));      // -1
