@@ -53,26 +53,6 @@ function wordToDigit(str) {
   });
 
   console.log(str);
-
-  // let arr = str.split(' ')
-  // arr.forEach((word, idx) => {
-  //   let toAdd;
-  //   let mustAdd = false;
-
-  //   if (word.match(/[^a-z]/)) {
-  //     toAdd = word.replace(/[a-z]/gi, '');
-  //     word = word.replace(/[^a-z]/gi, '');
-  //   }
-
-  //   if (CONVERTER[word]) {
-  //     arr[idx] = CONVERTER[word];
-  //     mustAdd = toAdd ? true : false;
-  //   }
-  //   if (mustAdd) {
-  //     arr[idx] += toAdd;
-  //   }
-  // })
-  // console.log(arr.join(' '));
 }
 
 wordToDigit('Please call me at five five five one two three four. Thanks.');

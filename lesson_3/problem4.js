@@ -71,15 +71,15 @@ A:
 */
 
 function parseRange(range, results) {
-  let stringNums
+  let stringNums;
   if (range.match(/[-:]/)) {
-    stringNums = range.split(/[-:]/)
+    stringNums = range.split(/[-:]/);
   } else {
-    stringNums = range.split(/\.\./)
+    stringNums = range.split(/\.\./);
   }
   
   if (!results[results.length - 1]) {
-    for (let i = 0; i < stringNums.length - 1; i += 1) {
+  for (let i = 0; i < stringNums.length - 1; i += 1) {
       let counter = Number(stringNums[i]);
       let max = Number(parseNum(stringNums[i + 1], results, String(counter)));
       while (counter <= max) {
@@ -134,9 +134,9 @@ function decipherShortHand(string) {
   
   for (let i = 0; i < stringNums.length; i += 1) {
     if (stringNums[i].match(/[-:]/) || stringNums[i].match(/\.\./)) {
-      results = (parseRange(stringNums[i], results))
+      results = (parseRange(stringNums[i], results));
     } else {
-      results.push(parseNum(stringNums[i], results))
+      results.push(parseNum(stringNums[i], results));
     }
   }
   return results;
